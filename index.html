@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix Name Animation - Responsif HP</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* Canvas untuk efek hujan angka hacker */
+        #matrix-canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Container untuk nama yang terbentuk di tengah & responsif */
+        .name-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap; /* Agar otomatis turun ke bawah jika layar terlalu sempit */
+            justify-content: center;
+            gap: 10px;
+            width: 90%;
+            max-width: 600px;
+            opacity: 0;
+            animation: fadeInName 2s ease forwards;
+            animation-delay: 4.5s;
+        }
+
+        .word {
+            display: flex;
+            gap: 2px;
+        }
+
+        .letter {
+            /* Menggunakan clamp agar ukuran font mengecil otomatis di HP tapi tetap besar di Laptop */
+            font-size: clamp(2rem, 10vw, 4.5rem);
+            font-weight: bold;
+            color: #00ff66;
+            text-shadow: 0 0 8px #00ff66, 0 0 15px #00ff66;
+            opacity: 0;
+            transform: scale(0.3);
+            animation: assembleLetter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Jeda kemunculan huruf (bisa disesuaikan dengan jumlah huruf Anda) */
+        .word:nth-child(1) .letter:nth-child(1) { animation-delay: 4.6s; }
+        .word:nth-child(1) .letter:nth-child(2) { animation-delay: 4.8s; }
+        .word:nth-child(1) .letter:nth-child(3) { animation-delay: 5.0s; }
+
+        .word:nth-child(2) .letter:nth-child(1) { animation-delay: 5.3s; }
+        .word:nth-child(2) .letter:nth-child(2) { animation-delay: 5.5s; }
+        .word:nth-child(2) .letter:nth-child(3) { animation-delay: 5.7s; }
+        .word:nth-child(2) .letter:nth-child(4) { animation-delay: 5.9s; }
+        .word:nth-child(2) .letter:nth-child(5) { animation-delay: 6.1s; }
+        .word:nth-child(2) .letter:nth-child(6) { animation-delay: 6.3s; }
+
+        @keyframes fadeInName {
+            to { opacity: 1; }
+        }
+
+        @keyframes assembleLetter {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(-30px);
+                filter: blur(8px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+                filter: blur(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="name-container">
+        <div class="word">
+            <span class="letter">E</span>
+            <span class="letter">V</span>
+            <span class="letter">A</span>
+        </div>
+        <div class="word">
+            <span class="letter">S</span>
+            <span class="letter">I</span>
+            <span class="letter">L</span>
+            <span class="letter">V</span>
+            <span class="letter">I</span>
+            <span class="letter">A</span>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const numbers = '0123456789';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff66';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = numbers.charAt(Math.floor(Math.random() * numbers.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 33);
+    </script>
+
+</body>
+</html>
