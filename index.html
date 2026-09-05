@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Matrix Name Animation - Responsif HP</title>
+    <title>Matrix Name Animation - MAAFIN AKU YAH SUCI OKTAVIANA</title>
     <style>
         body, html {
             margin: 0;
@@ -26,7 +26,7 @@
             z-index: 1;
         }
 
-        /* Container untuk nama yang terbentuk di tengah & responsif */
+        /* Container untuk teks di tengah & responsif */
         .name-container {
             position: absolute;
             top: 50%;
@@ -34,14 +34,14 @@
             transform: translate(-50%, -50%);
             z-index: 2;
             display: flex;
-            flex-wrap: wrap; /* Agar otomatis turun ke bawah jika layar terlalu sempit */
+            flex-wrap: wrap; /* Agar otomatis turun ke bawah jika layar HP sempit */
             justify-content: center;
-            gap: 10px;
-            width: 90%;
-            max-width: 600px;
+            gap: 15px;
+            width: 95%;
+            max-width: 800px;
             opacity: 0;
             animation: fadeInName 2s ease forwards;
-            animation-delay: 4.5s;
+            animation-delay: 3s;
         }
 
         .word {
@@ -50,8 +50,8 @@
         }
 
         .letter {
-            /* Menggunakan clamp agar ukuran font mengecil otomatis di HP tapi tetap besar di Laptop */
-            font-size: clamp(2rem, 10vw, 4.5rem);
+            /* Ukuran font otomatis menyesuaikan lebar layar HP */
+            font-size: clamp(1.5rem, 6vw, 3.5rem);
             font-weight: bold;
             color: #00ff66;
             text-shadow: 0 0 8px #00ff66, 0 0 15px #00ff66;
@@ -60,17 +60,41 @@
             animation: assembleLetter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
-        /* Jeda kemunculan huruf (bisa disesuaikan dengan jumlah huruf Anda) */
-        .word:nth-child(1) .letter:nth-child(1) { animation-delay: 4.6s; }
-        .word:nth-child(1) .letter:nth-child(2) { animation-delay: 4.8s; }
-        .word:nth-child(1) .letter:nth-child(3) { animation-delay: 5.0s; }
+        /* Jeda kemunculan huruf berurutan untuk setiap kata */
+        /* Kata 1: MAAFIN (6 huruf) */
+        .word:nth-child(1) .letter:nth-child(1) { animation-delay: 3.1s; }
+        .word:nth-child(1) .letter:nth-child(2) { animation-delay: 3.3s; }
+        .word:nth-child(1) .letter:nth-child(3) { animation-delay: 3.5s; }
+        .word:nth-child(1) .letter:nth-child(4) { animation-delay: 3.7s; }
+        .word:nth-child(1) .letter:nth-child(5) { animation-delay: 3.9s; }
+        .word:nth-child(1) .letter:nth-child(6) { animation-delay: 4.1s; }
 
-        .word:nth-child(2) .letter:nth-child(1) { animation-delay: 5.3s; }
-        .word:nth-child(2) .letter:nth-child(2) { animation-delay: 5.5s; }
-        .word:nth-child(2) .letter:nth-child(3) { animation-delay: 5.7s; }
-        .word:nth-child(2) .letter:nth-child(4) { animation-delay: 5.9s; }
-        .word:nth-child(2) .letter:nth-child(5) { animation-delay: 6.1s; }
-        .word:nth-child(2) .letter:nth-child(6) { animation-delay: 6.3s; }
+        /* Kata 2: AKU (3 huruf) */
+        .word:nth-child(2) .letter:nth-child(1) { animation-delay: 4.4s; }
+        .word:nth-child(2) .letter:nth-child(2) { animation-delay: 4.6s; }
+        .word:nth-child(2) .letter:nth-child(3) { animation-delay: 4.8s; }
+
+        /* Kata 3: YAH (3 huruf) */
+        .word:nth-child(3) .letter:nth-child(1) { animation-delay: 5.1s; }
+        .word:nth-child(3) .letter:nth-child(2) { animation-delay: 5.3s; }
+        .word:nth-child(3) .letter:nth-child(3) { animation-delay: 5.5s; }
+
+        /* Kata 4: SUCI (4 huruf) */
+        .word:nth-child(4) .letter:nth-child(1) { animation-delay: 5.8s; }
+        .word:nth-child(4) .letter:nth-child(2) { animation-delay: 6.0s; }
+        .word:nth-child(4) .letter:nth-child(3) { animation-delay: 6.2s; }
+        .word:nth-child(4) .letter:nth-child(4) { animation-delay: 6.4s; }
+
+        /* Kata 5: OKTAVIANA (9 huruf) */
+        .word:nth-child(5) .letter:nth-child(1) { animation-delay: 6.7s; }
+        .word:nth-child(5) .letter:nth-child(2) { animation-delay: 6.9s; }
+        .word:nth-child(5) .letter:nth-child(3) { animation-delay: 7.1s; }
+        .word:nth-child(5) .letter:nth-child(4) { animation-delay: 7.3s; }
+        .word:nth-child(5) .letter:nth-child(5) { animation-delay: 7.5s; }
+        .word:nth-child(5) .letter:nth-child(6) { animation-delay: 7.7s; }
+        .word:nth-child(5) .letter:nth-child(7) { animation-delay: 7.9s; }
+        .word:nth-child(5) .letter:nth-child(8) { animation-delay: 8.1s; }
+        .word:nth-child(5) .letter:nth-child(9) { animation-delay: 8.3s; }
 
         @keyframes fadeInName {
             to { opacity: 1; }
@@ -96,16 +120,38 @@
 
     <div class="name-container">
         <div class="word">
-            <span class="letter">E</span>
-            <span class="letter">V</span>
+            <span class="letter">M</span>
             <span class="letter">A</span>
+            <span class="letter">A</span>
+            <span class="letter">F</span>
+            <span class="letter">I</span>
+            <span class="letter">N</span>
+        </div>
+        <div class="word">
+            <span class="letter">A</span>
+            <span class="letter">K</span>
+            <span class="letter">U</span>
+        </div>
+        <div class="word">
+            <span class="letter">Y</span>
+            <span class="letter">A</span>
+            <span class="letter">H</span>
         </div>
         <div class="word">
             <span class="letter">S</span>
+            <span class="letter">U</span>
+            <span class="letter">C</span>
             <span class="letter">I</span>
-            <span class="letter">L</span>
+        </div>
+        <div class="word">
+            <span class="letter">O</span>
+            <span class="letter">K</span>
+            <span class="letter">T</span>
+            <span class="letter">A</span>
             <span class="letter">V</span>
             <span class="letter">I</span>
+            <span class="letter">A</span>
+            <span class="letter">N</span>
             <span class="letter">A</span>
         </div>
     </div>
