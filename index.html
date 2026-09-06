@@ -15,7 +15,7 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
-        /* Canvas untuk efek hujan angka hacker */
+        /* Canvas untuk efek hujan angka hacker di background */
         #matrix-canvas {
             display: block;
             position: absolute;
@@ -26,90 +26,75 @@
             z-index: 1;
         }
 
-        /* Container untuk teks di tengah & responsif */
+        /* Container untuk teks di tengah layar */
         .name-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 2;
             display: flex;
-            flex-wrap: wrap; /* Agar otomatis turun ke bawah jika layar HP sempit */
+            flex-direction: column;
+            gap: 15px; /* Jarak antar baris */
+            align-items: center;
+            z-index: 2; /* Supaya berada di atas canvas hujan Matrix */
+            text-align: center;
+            width: 100%;
+        }
+
+        .line {
+            display: flex;
+            gap: 15px; /* Jarak antar kata */
             justify-content: center;
-            gap: 15px;
-            width: 95%;
-            max-width: 800px;
-            opacity: 0;
-            animation: fadeInName 2s ease forwards;
-            animation-delay: 3s;
         }
 
         .word {
             display: flex;
-            gap: 2px;
+            gap: 4px; /* Jarak antar huruf/simbol */
         }
 
+        /* Styling dasar teks */
         .letter {
-            /* Ukuran font otomatis menyesuaikan lebar layar HP */
-            font-size: clamp(1.5rem, 6vw, 3.5rem);
+            display: inline-block;
+            color: #00ff66; /* Warna hijau neon khas Matrix */
+            font-size: 2rem; /* Ukuran standar untuk baris 2 & 3 */
             font-weight: bold;
-            color: #00ff66;
-            text-shadow: 0 0 8px #00ff66, 0 0 15px #00ff66;
-            opacity: 0;
-            transform: scale(0.3);
-            animation: assembleLetter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            text-shadow: 0 0 10px rgba(0, 255, 102, 0.8), 0 0 20px rgba(0, 255, 102, 0.4);
+            opacity: 0; /* Mulai dari tak terlihat */
+            transform: translateY(20px);
+            animation: fadeInLetter 0.5s ease forwards;
+            
+            /* Jeda 3 detik hujan Matrix dulu, baru huruf muncul satu per satu */
+            animation-delay: calc(3s + (var(--i) * 0.08s)); 
         }
 
-        /* Jeda kemunculan huruf berurutan untuk setiap kata */
-        /* Kata 1: MAAFIN (6 huruf) */
-        .word:nth-child(1) .letter:nth-child(1) { animation-delay: 3.1s; }
-        .word:nth-child(1) .letter:nth-child(2) { animation-delay: 3.3s; }
-        .word:nth-child(1) .letter:nth-child(3) { animation-delay: 3.5s; }
-        .word:nth-child(1) .letter:nth-child(4) { animation-delay: 3.7s; }
-        .word:nth-child(1) .letter:nth-child(5) { animation-delay: 3.9s; }
-        .word:nth-child(1) .letter:nth-child(6) { animation-delay: 4.1s; }
-
-        /* Kata 2: AKU (3 huruf) */
-        .word:nth-child(2) .letter:nth-child(1) { animation-delay: 4.4s; }
-        .word:nth-child(2) .letter:nth-child(2) { animation-delay: 4.6s; }
-        .word:nth-child(2) .letter:nth-child(3) { animation-delay: 4.8s; }
-
-        /* Kata 3: YAH (3 huruf) */
-        .word:nth-child(3) .letter:nth-child(1) { animation-delay: 5.1s; }
-        .word:nth-child(3) .letter:nth-child(2) { animation-delay: 5.3s; }
-        .word:nth-child(3) .letter:nth-child(3) { animation-delay: 5.5s; }
-
-        /* Kata 4: SUCI (4 huruf) */
-        .word:nth-child(4) .letter:nth-child(1) { animation-delay: 5.8s; }
-        .word:nth-child(4) .letter:nth-child(2) { animation-delay: 6.0s; }
-        .word:nth-child(4) .letter:nth-child(3) { animation-delay: 6.2s; }
-        .word:nth-child(4) .letter:nth-child(4) { animation-delay: 6.4s; }
-
-        /* Kata 5: OKTAVIANA (9 huruf) */
-        .word:nth-child(5) .letter:nth-child(1) { animation-delay: 6.7s; }
-        .word:nth-child(5) .letter:nth-child(2) { animation-delay: 6.9s; }
-        .word:nth-child(5) .letter:nth-child(3) { animation-delay: 7.1s; }
-        .word:nth-child(5) .letter:nth-child(4) { animation-delay: 7.3s; }
-        .word:nth-child(5) .letter:nth-child(5) { animation-delay: 7.5s; }
-        .word:nth-child(5) .letter:nth-child(6) { animation-delay: 7.7s; }
-        .word:nth-child(5) .letter:nth-child(7) { animation-delay: 7.9s; }
-        .word:nth-child(5) .letter:nth-child(8) { animation-delay: 8.1s; }
-        .word:nth-child(5) .letter:nth-child(9) { animation-delay: 8.3s; }
-
-        @keyframes fadeInName {
-            to { opacity: 1; }
+        /* Kelas khusus untuk memperbesar baris pertama ("AKU SAYANG KAMU") */
+        .letter.large {
+            font-size: 2.8rem; 
         }
 
-        @keyframes assembleLetter {
-            0% {
-                opacity: 0;
-                transform: scale(0.3) translateY(-30px);
-                filter: blur(8px);
-            }
-            100% {
+        /* Kelas khusus untuk memberikan efek cahaya neon pada simbol emoji */
+        .letter.symbol {
+            filter: drop-shadow(0 0 8px rgba(0, 255, 102, 0.9));
+        }
+
+        /* Keyframes untuk animasi munculnya huruf */
+        @keyframes fadeInLetter {
+            to {
                 opacity: 1;
-                transform: scale(1) translateY(0);
-                filter: blur(0);
+                transform: translateY(0);
+            }
+        }
+
+        /* Penyesuaian untuk layar HP agar teks tidak terlalu besar */
+        @media (max-width: 600px) {
+            .letter {
+                font-size: 1.8rem;
+            }
+            .letter.large {
+                font-size: 1.8rem;
+            }
+            .line {
+                gap: 8px;
             }
         }
     </style>
@@ -119,45 +104,60 @@
     <canvas id="matrix-canvas"></canvas>
 
     <div class="name-container">
-        <div class="word">
-            <span class="letter">M</span>
-            <span class="letter">A</span>
-            <span class="letter">A</span>
-            <span class="letter">F</span>
-            <span class="letter">I</span>
-            <span class="letter">N</span>
+        <!-- Baris 1: AKU SAYANG KAMU (Ukuran Lebih Besar / class "large", Urutan 1 - 13) -->
+        <div class="line">
+            <div class="word">
+                <span class="letter large" style="--i: 1">A</span>
+                <span class="letter large" style="--i: 2">K</span>
+                <span class="letter large" style="--i: 3">U</span>
+            </div>
+            <div class="word">
+                <span class="letter large" style="--i: 4">S</span>
+                <span class="letter large" style="--i: 5">A</span>
+                <span class="letter large" style="--i: 6">Y</span>
+                <span class="letter large" style="--i: 7">A</span>
+                <span class="letter large" style="--i: 8">N</span>
+                <span class="letter large" style="--i: 9">G</span>
+            </div>
+            <div class="word">
+                <span class="letter large" style="--i: 10">K</span>
+                <span class="letter large" style="--i: 11">A</span>
+                <span class="letter large" style="--i: 12">M</span>
+                <span class="letter large" style="--i: 13">U</span>
+            </div>
         </div>
-        <div class="word">
-            <span class="letter">A</span>
-            <span class="letter">K</span>
-            <span class="letter">U</span>
+
+        <!-- Baris 2: SUCI OKTAVIANA (Ukuran Standar, Urutan 14 - 26) -->
+        <div class="line">
+            <div class="word">
+                <span class="letter" style="--i: 14">S</span>
+                <span class="letter" style="--i: 15">U</span>
+                <span class="letter" style="--i: 16">C</span>
+                <span class="letter" style="--i: 17">I</span>
+            </div>
+            <div class="word">
+                <span class="letter" style="--i: 18">O</span>
+                <span class="letter" style="--i: 19">K</span>
+                <span class="letter" style="--i: 20">T</span>
+                <span class="letter" style="--i: 21">A</span>
+                <span class="letter" style="--i: 22">V</span>
+                <span class="letter" style="--i: 23">I</span>
+                <span class="letter" style="--i: 24">A</span>
+                <span class="letter" style="--i: 25">N</span>
+                <span class="letter" style="--i: 26">I</span>
+            </div>
         </div>
-        <div class="word">
-            <span class="letter">Y</span>
-            <span class="letter">A</span>
-            <span class="letter">H</span>
+
+        <!-- Baris 3: Simbol 🫶🧸🫶 (Dengan efek neon symbol, Urutan 27 - 29) -->
+        <div class="line">
+            <div class="word">
+                <span class="letter symbol" style="--i: 27">🫶</span>
+                <span class="letter symbol" style="--i: 28">🧸</span>
+                <span class="letter symbol" style="--i: 29">🫶</span>
+            </div>
         </div>
     </div>
     
-    <div class="line">
-        <div class="word">
-            <span class="letter">S</span>
-            <span class="letter">U</span>
-            <span class="letter">C</span>
-            <span class="letter">I</span>
-        </div>
-        <div class="word">
-            <span class="letter">O</span>
-            <span class="letter">K</span>
-            <span class="letter">T</span>
-            <span class="letter">A</span>
-            <span class="letter">V</span>
-            <span class="letter">I</span>
-            <span class="letter">A</span>
-            <span class="letter">N</span>
-            <span class="letter">I</span>
-        </div>
-    </div>
 
     <script>
         const canvas = document.getElementById('matrix-canvas');
@@ -171,7 +171,7 @@
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
 
-        const numbers = '0123456789';
+        const numbers = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         const fontSize = 14;
         const columns = canvas.width / fontSize;
 
